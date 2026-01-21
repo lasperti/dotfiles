@@ -19,9 +19,11 @@ bindsym $mod+e exec emacsclient -c -a 'emacs'
 # thunar file manager
 bindsym $mod+f exec thunar
 
-# wallpaper and waybar
-exec_always swaybg -i ~/Pictures/Wallpapers/1661249973800408.jpg -m fill
-exec_always /home/asperti/.config/waybar/launch.sh
+# wallpaper
+exec_always swaybg -i ~/Pictures/Wallpapers/wallpaper.jpg -m fill
+
+# waybar
+exec ~/.config/waybar/launch.sh
 
 # mako
 exec_always mako
@@ -152,10 +154,6 @@ smart_borders off
 output * scale 1
 output * bg #1d2021 solid_color
 
-# multi-monitor arrangement
-output "HDMI-A-1" pos 0 0
-output "eDP-1" pos 1920 0
-
 # gruvbox dark hard palette
 set $bg      #1d2021
 set $fg      #ebdbb2
@@ -184,3 +182,30 @@ exec_always {
     gsettings set $gnome-schema font-name 'JetBrainsMono Nerd Font 11'
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 }
+
+# mouse acceleration
+input "type:pointer" {
+    accel_profile flat
+    pointer_accel 0
+}
+
+# game mode
+mode "gaming" {
+    bindsym $mod+Shift+e mode "default"
+}
+bindsym $mod+Shift+g mode "gaming"
+
+# window rules
+for_window [class="^Steam$"] floating enable
+for_window [app_id="lutris"] floating enable
+for_window [instance="origin.exe"] floating enable
+
+# fix xwayland scaling issues
+xwayland {
+  force_zero_scaling 
+}
+
+# screen tearing
+for_window [class="^Steam$"] allow_tearing yes
+for_window [app_id="^lutris$"] allow_tearing yes
+for_window [title="^.*"] allow_tearing yes
