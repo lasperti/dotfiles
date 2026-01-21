@@ -192,21 +192,10 @@ input "type:pointer" {
     pointer_accel 0
 }
 
-# game mode
-mode "gaming" {
-    bindsym $mod+Shift+e mode "default"
-}
-bindsym $mod+Shift+g mode "gaming"
-
 # window rules
 for_window [class="^Steam$"] floating enable
 for_window [app_id="lutris"] floating enable
 for_window [instance="origin.exe"] floating enable
-
-# fix xwayland scaling issues
-xwayland {
-  force_zero_scaling 
-}
 
 # screen tearing
 for_window [class="^Steam$"] allow_tearing yes
