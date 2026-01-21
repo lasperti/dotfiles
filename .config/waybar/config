@@ -1,0 +1,88 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+
+    "modules-left": ["sway/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": [
+        "pulseaudio",
+        "network",
+        "cpu",
+        "memory",
+        "battery",
+        "tray",
+        "sway/mode"
+    ],
+
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{name}",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4D": "4",
+            "5": "5",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
+    "clock": {
+        "format": " {:%H:%M}",
+        "format-alt": " {:%Y-%m-%d}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 5
+    },
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": true,
+        "interval": 1
+    },
+    "memory": {
+        "format": " {}%",
+        "tooltip": true,
+        "interval": 1
+    },
+    "network": {
+        "format-wifi": " {essid} ({signalStrength}%)",
+        "format-ethernet": " {ipaddr}/{cidr}",
+        "format-disconnected": "󰌙 Disconnected",
+        "tooltip-format-wifi": "Signal: {signalStrength}% | Freq: {frequency}MHz\nIP: {ipaddr}\nGateway: {gwaddr}",
+        "tooltip-format-ethernet": "IP: {ipaddr}\nGateway: {gwaddr}",
+        "on-click": "alacritty -e nmtui"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " Muted",
+        "on-click": "pavucontrol",
+        "format-icons": {
+            "headphone": "🎧",
+            "hands-free": "🎧",
+            "headset": "🎧",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        }
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    }
+}

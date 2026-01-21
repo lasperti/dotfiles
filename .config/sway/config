@@ -1,0 +1,186 @@
+# initial binds
+set $mod Mod4
+bindsym $mod+d exec wofi --show drun
+bindsym $mod+Return exec kitty
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+e exec swaymsg exit
+bindsym $mod+Shift+q kill
+
+# web browser
+bindsym $mod+w exec librewolf
+
+# screen sharing
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+# editor
+bindsym $mod+e exec emacsclient -c -a 'emacs'
+
+# thunar file manager
+bindsym $mod+f exec thunar
+
+# wallpaper and waybar
+exec_always swaybg -i ~/Pictures/Wallpapers/1661249973800408.jpg -m fill
+exec_always /home/asperti/.config/waybar/launch.sh
+
+# mako
+exec_always mako
+
+# scratchpad
+bindsym $mod+minus move scratchpad
+bindsym $mod+plus scratchpad show
+
+# navigation
+set $left h
+set $right l
+set $up k 
+set $down j
+
+# move focus
+bindsym $mod+$left focus left
+bindsym $mod+$right focus right
+bindsym $mod+$up focus up
+bindsym $mod+$down focus down
+
+# move focused window
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+# define workspace
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws0 "0"
+
+# switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws0
+
+
+# move window to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws0
+
+# toggle tiling/floating
+bindsym $mod+Shift+space floating toggle
+
+# change split direction
+bindsym $mod+b splith  # horizontal split
+bindsym $mod+v splitv  # vertical split
+
+# resize mode
+mode "resize" {
+    bindsym $left  resize shrink width 10px
+    bindsym $down  resize grow height 10px
+    bindsym $up    resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# start resize mode
+bindsym $mod+Shift+r mode "resize"
+
+# brightness
+bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+
+# audio
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+# screenshot selection
+bindsym $mod+Print exec grim -g "$(slurp)" - | swappy -f -
+
+# screenshot whole screen
+bindsym Print exec grim - | swappy -f -
+
+# input
+input "1:1:AT_Translated_Set_2_keyboard" {
+	xkb_layout br
+	xkb_variant abnt2
+}
+
+# idle and screen locking
+exec swayidle -w \
+     timeout 300 'swaylock -f -c 000000' \
+     timeout 600 'swaymsg "output * dpms off"' \
+          resume 'swaymsg "output * dpms on"' \
+     before-sleep 'swaylock -f -c 000000'
+
+# copypaste history
+exec wl-paste -t text --watch cliphist store
+bindsym $mod+c exec cliphist list | wofi -dmenu | cliphist decode | wl-copy
+
+# gaps
+gaps inner 0
+gaps outer 0
+smart_gaps off
+
+# borders
+default_border pixel 2
+default_floating_border pixel 1
+smart_borders off
+
+# automatic output scaling
+output * scale 1
+output * bg #1d2021 solid_color
+
+# multi-monitor arrangement
+output "HDMI-A-1" pos 0 0
+output "eDP-1" pos 1920 0
+
+# gruvbox dark hard palette
+set $bg      #1d2021
+set $fg      #ebdbb2
+set $red     #cc241d
+set $green   #98971a
+set $yellow  #d79921
+set $blue    #458588
+set $purple  #b16286
+set $aqua    #689d6a
+set $gray    #a89984
+set $darkgray #282828
+
+#                       border      bg          text        indicator   child_border
+client.focused          $red        $bg         $fg         $red       $red
+client.unfocused        $darkgray   $bg         $gray       $darkgray   $darkgray
+client.focused_inactive $darkgray   $bg         $gray       $darkgray   $darkgray
+client.urgent           $red        $bg         $fg         $red        $red
+client.placeholder      #000000     #0c0c0c     $fg         #000000     #0c0c0c
+client.background       $bg
+
+# theme synchronization
+set $gnome-schema org.gnome.desktop.interface
+exec_always {
+    gsettings set $gnome-schema gtk-theme 'Gruvbox-Material-Dark'
+    gsettings set $gnome-schema icon-theme 'Papyrus-Dark'
+    gsettings set $gnome-schema font-name 'JetBrainsMono Nerd Font 11'
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+}
